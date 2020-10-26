@@ -37,23 +37,30 @@ app.get('/', (req, res)=> { // PAGINA DE INICIO
 
 // --------------------------------------------------------------------------
 app.get('/users', (req, res)=> { // PAGINA DE USUARIOS
-    res.send('USUARIOS')
+    res.json(usuarios);
 });
 
 
-app.get('/users/new', (req, res)=> { // PAGINA DE USUARIOS (BUSQUEDA POR NICK)
+app.get('/users/profile/:nick', (req, res)=> { // PAGINA DE USUARIOS (BUSQUEDA POR NICK)
     const nick = req.params.nick;
     let usuarioElegido = usuarios.find(usuarioElegido => usuarioElegido.nick == nick);
+    let usuarios = usuarioElegido;
+    res.json(usuarioElegido);
+});
+
+
+app.delete('/users/profile/:nick', (req, res)=> { // PAGINA DE USUARIOS (BORRAR POR NICK)
+    const nick = req.params.nick;
+    let usuarioElegido = usuarios.find(usuarioElegido => usuarioElegido.nick == nick);
+    let usuarios = usuarioElegido;
     res.json(usuarioElegido);
 });
 
 app.post('/users/new', (req, res)=> { // PAGINA DE USUARIOS NUEVOS
     let = { nick, contrasenya} = req.body;
     let nuevoUsuario = { nick, contrasenya};
-    console.log(nuevoUsuario);
     usuarios.push(nuevoUsuario);
     res.json(nuevoUsuario);
-
 });
 
 
