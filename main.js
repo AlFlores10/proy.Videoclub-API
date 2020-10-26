@@ -25,22 +25,34 @@ app.listen(3000, ()=> { // INICIANDO SERVIDOR NODE
     console.log('Servidor levantado en 3000 ms');
 });
 
+
+// -----------------------------------------------------------------------
 app.get('/', (req, res)=> { // PAGINA DE INICIO
     res.send('<h1>proy.Videoclub-API Version 1.0.0</h1>')
 });
 
 
+// --------------------------------------------------------------------------
 app.get('/users', (req, res)=> { // PAGINA DE USUARIOS
     res.send('USUARIOS')
 });
 
 
-app.get('/films', (req, res)=> { // PAGINA DE USUARIOS
-    res.send('FILMS')
+// -----------------------------------------------------------------------------
+app.get('/films', (req, res)=> { // PAGINA DE FILMS
+    res.json(carteleraPeliculas);
 });
 
 
-app.get('/pedidos', (req, res)=> { // PAGINA DE USUARIOS
+app.get('/films/:id', (req, res)=> { // PAGINA DE FILMS
+    const id = req.params.id;
+    let peliculaElegida = carteleraPeliculas.find(peliculaElegida => peliculaElegida.id == id);
+    res.json(peliculaElegida);
+});
+
+
+// ------------------------------------------------------------------------------
+app.get('/pedidos', (req, res)=> { // PAGINA DE PEDIDOS
     res.send('PEDIDOS')
 });
 
