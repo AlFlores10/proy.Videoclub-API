@@ -2,14 +2,15 @@ const express = require('express'); // IMPORTA EXPRESS
 const cors = require('cors'); // IMPORTA CORS
 const app = express(); // USA EXPRESS
 app.use(cors()); // USA CORS
+app.use(express.json());
 
 
 
-let double = require('./modules.js')
-let result = double(3);
+// let double = require('./modules.js')
+// let result = double(3);
 
-console.log(result);
-console.log("hola mundo", process.argv[2]);
+// console.log(result);
+// console.log("hola mundo", process.argv[2]);
 
 // -----------------------------------------------------------------------
 const carteleraPeliculas = [
@@ -17,7 +18,9 @@ const carteleraPeliculas = [
     { id: 2, titulo: 'American Gangster'},
     { id: 3, titulo: 'Los Juegos del Hambre'},
     { id: 4, titulo: 'Monstruos S.A.'},
-]
+];
+let usuarios = [];
+let pedidos = [];
 
 // --------------------------------------------------------------------
 
@@ -35,6 +38,22 @@ app.get('/', (req, res)=> { // PAGINA DE INICIO
 // --------------------------------------------------------------------------
 app.get('/users', (req, res)=> { // PAGINA DE USUARIOS
     res.send('USUARIOS')
+});
+
+
+app.get('/users/new', (req, res)=> { // PAGINA DE USUARIOS (BUSQUEDA POR NICK)
+    const nick = req.params.nick;
+    let usuarioElegido = usuarios.find(usuarioElegido => usuarioElegido.nick == nick);
+    res.json(usuarioElegido);
+});
+
+app.post('/users/new', (req, res)=> { // PAGINA DE USUARIOS NUEVOS
+    let = { nick, contrasenya} = req.body;
+    let nuevoUsuario = { nick, contrasenya};
+    console.log(nuevoUsuario);
+    usuarios.push(nuevoUsuario);
+    res.json(nuevoUsuario);
+
 });
 
 
