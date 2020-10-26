@@ -14,8 +14,8 @@ console.log("hola mundo", process.argv[2]);
 // -----------------------------------------------------------------------
 const carteleraPeliculas = [
     { id: 1, titulo: 'Matrix'},
-    { id: 2, titulo: 'Spartacus'},
-    { id: 3, titulo: 'Los juegos del hambre'},
+    { id: 2, titulo: 'American Gangster'},
+    { id: 3, titulo: 'Los Juegos del Hambre'},
     { id: 4, titulo: 'Monstruos S.A.'},
 ]
 
@@ -44,10 +44,17 @@ app.get('/films', (req, res)=> { // PAGINA DE FILMS
 });
 
 
-app.get('/films/:id', (req, res)=> { // PAGINA DE FILMS
+app.get('/films/id/:id', (req, res)=> { // PAGINA DE FILMS (BUSQUEDA POR ID)
     const id = req.params.id;
     let peliculaElegida = carteleraPeliculas.find(peliculaElegida => peliculaElegida.id == id);
     res.json(peliculaElegida);
+});
+
+
+app.get('/films/titulo/:titulo', (req, res)=> { // PAGINA DE FILMS (BUSQUEDA POR TITULO)
+    const titulo = req.params.titulo;
+    let tituloElegido = carteleraPeliculas.find(tituloElegido => tituloElegido.titulo == titulo);
+    res.json(tituloElegido);
 });
 
 
