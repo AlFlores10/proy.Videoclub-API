@@ -1,18 +1,55 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// IMPORTA EXPRESS Y CORS /////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 const express = require('express'); // IMPORTA EXPRESS
 const cors = require('cors'); // IMPORTA CORS
+
 const app = express(); // USA EXPRESS
 app.use(cors()); // USA CORS
 app.use(express.json());
 
+const routeMovies = require('./components/movie/router.js');
+const Movie = require('./components/movie/model.js');
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////// IMPORTA MONGOOSE DB Y CREA LA CADENA DE CONEXION CON LA BBDD ////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+const mongoose = require('mongoose'); // IMPORTA MONGOOSE
+
+mongoose.connect('mongodb://localhost:27017/db-ejemplo', { // CREA CONEXION Y BASE DE DATOS CON MONGODB
+useNewUrlParser: true,
+useUnifiedTopology: true,
+useCreateIndex: true,
+useFindAndModify: false
+})
+
+.then(() => console.log('Mongoose funcionando'))  // SE EJECUTA SI LA PROMESA DEL METODO CONNECT SE RESUELVE BIEN
+.catch(() => console.log('Mongoose NO funcionando')); // SE EJECUTA SI LA PROMESA DEL METODO CONNECT SE RESUELVE MAL
 
 
-// let double = require('./modules.js')
-// let result = double(3);
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////// MIDDLEWARES ///////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// console.log(result);
-// console.log("hola mundo", process.argv[2]);
+app.use((req, res, next) => { // MIDDLEWARE VALIDACION
+    console.log('Ejecutando middleware');
+    next();
+});
 
-// -----------------------------------------------------------------------
+const middleware2 = (req, res, next)=> {  // CREA UN MIDDLEWARE COMO FUNCION PARA PODER REUTILIZARLA
+    console.log('Ha pasado por aqui 2');
+    next();
+};
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////// ARRAYS CARTELERA-PELICULAS, USUARIOS, PEDIDOS //////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 const carteleraPeliculas = [
     { id: 1, titulo: 'Matrix'},
     { id: 2, titulo: 'American Gangster'},
@@ -22,29 +59,36 @@ const carteleraPeliculas = [
 let usuarios = [];
 let pedidos = [];
 
-// --------------------------------------------------------------------
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////// INICIANDO SERVIDOR NODE //////////////////////////////////////////////////// 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 app.listen(3000, ()=> { // INICIANDO SERVIDOR NODE
-    console.log('Servidor levantado en 3000 ms');
+    console.log('Servidor levantado en puerto 3000 ');
 });
 
 
-// -----------------------------------------------------------------------
-app.get('/', (req, res)=> { // PAGINA DE INICIO
-    res.send('<h1>proy.Videoclub-API Version 1.0.0</h1>')
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////// PETICIONES PAGINA DE INICIO ('/') //////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+app.get('/', middleware2, (req, res)=> { // PAGINA DE INICIO
+    res.json('proy.Videoclub-API Version 1.0.0')
 });
 
 
-// --------------------------------------------------------------------------
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////// PETICIONES PAGINA DE USUARIO ///////////////////////////////////////////////// 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 app.get('/users', (req, res)=> { // PAGINA DE USUARIOS
     res.json(usuarios);
 });
 
 
 app.get('/users/profile/:nick', (req, res)=> { // PAGINA DE USUARIOS (BUSQUEDA POR NICK)
-    const nick = req.params.nick;
-    let usuarioElegido = usuarios.find(usuarioElegido => usuarioElegido.nick == nick);
-    let usuarios = usuarioElegido;
+    const usuarioElegido = req.params.nick;
+    usuarioElegido = usuarios.find(usuarioElegido => usuarioElegido.nick == nick);
     res.json(usuarioElegido);
 });
 
@@ -52,11 +96,10 @@ app.get('/users/profile/:nick', (req, res)=> { // PAGINA DE USUARIOS (BUSQUEDA P
 app.delete('/users/profile/:nick', (req, res)=> { // PAGINA DE USUARIOS (BORRAR POR NICK)
     const nick = req.params.nick;
     let usuarioElegido = usuarios.find(usuarioElegido => usuarioElegido.nick == nick);
-    let usuarios = usuarioElegido;
     res.json(usuarioElegido);
 });
 
-app.post('/users/new', (req, res)=> { // PAGINA DE USUARIOS NUEVOS
+app.post('/users', (req, res)=> { // PAGINA DE USUARIOS NUEVOS
     let = { nick, contrasenya} = req.body;
     let nuevoUsuario = { nick, contrasenya};
     usuarios.push(nuevoUsuario);
@@ -64,30 +107,30 @@ app.post('/users/new', (req, res)=> { // PAGINA DE USUARIOS NUEVOS
 });
 
 
-// -----------------------------------------------------------------------------
-app.get('/films', (req, res)=> { // PAGINA DE FILMS
-    res.json(carteleraPeliculas);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////// PETICIONES PAGINA DE PELICULAS //////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+app.use('/films', routeMovies);   /// TODAS LAS PELICULAS ///
+
+app.get('/films/:field1', routeMovies); //// BUSQUEDA POR TITULO ////
+
+app.patch('/films/:field1', routeMovies); //// MODIFICA POR TITULO ////
+
+app.post('/films', routeMovies); /// NUEVA PELICULA ///
+
+app.delete('/films/:field1', async (req, res) => { // BORRAR PELICULA
+    const borraPelicula = await Movie.findOne({field1: req.params.field1});
+    res.json(`${borraPelicula} Ha sido borrada con exito`);
+
 });
 
 
-app.get('/films/id/:id', (req, res)=> { // PAGINA DE FILMS (BUSQUEDA POR ID)
-    const id = req.params.id;
-    let peliculaElegida = carteleraPeliculas.find(peliculaElegida => peliculaElegida.id == id);
-    res.json(peliculaElegida);
-});
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////// PETICIONES PAGINA DE PEDIDOS //////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-app.get('/films/titulo/:titulo', (req, res)=> { // PAGINA DE FILMS (BUSQUEDA POR TITULO)
-    const titulo = req.params.titulo;
-    let tituloElegido = carteleraPeliculas.find(tituloElegido => tituloElegido.titulo == titulo);
-    res.json(tituloElegido);
-});
-
-
-// ------------------------------------------------------------------------------
 app.get('/pedidos', (req, res)=> { // PAGINA DE PEDIDOS
-    res.send('PEDIDOS')
+    res.json(pedidos);  
 });
 
-
-// -----------------------------------------------------------------------------
