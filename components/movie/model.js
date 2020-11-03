@@ -2,18 +2,15 @@ const mongoose = require('mongoose');
 
 const MovieSchema = new mongoose.Schema({
 
-    field1: { 
+    title: { 
         type: String 
     },
+    duration: { 
+        type: String 
+    },
+    category: { 
+        type: String, enum: ['TP', '+18'] 
+    }
 
 });
 module.exports = mongoose.model('Movie', MovieSchema);
-
-
-/////////////////////////// ///////////////// CREACION TABLA MONGOOSE ///////////////////////////////////////////////////
-
-// const Movie = mongoose.model('Movie', new mongoose.Schema({
-//     field1: {
-//         type: String
-//       }
-// }));
