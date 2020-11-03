@@ -6,14 +6,17 @@ const express = require('express'); // IMPORTA EXPRESS
 const cors = require('cors'); // IMPORTA CORS
 
 const app = express(); // USA EXPRESS
-app.use(cors()); // USA CORS
-app.use(express.json());
+app.use(cors()); // INSTANCIA CORS
+app.use(express.json()); // INSTANCIA BODYPARSER
 
 const routeMovies = require('./components/movie/router.js');
 const Movie = require('./components/movie/model.js');
 
 const routeUsers = require('./components/users/router.js');
 const User = require('./components/users/model.js');
+
+const routePedidos = require('./components/pedidos/router.js');
+const Pedido = require('./components/pedidos/model.js');
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////// IMPORTA MONGOOSE DB Y CREA LA CADENA DE CONEXION CON LA BBDD ////////////////////////////////
@@ -92,7 +95,6 @@ app.delete('/films', routeMovies); /// ELIMINAR PELICULA ///
 ////////////////////////////////////////////// PETICIONES PAGINA DE PEDIDOS //////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.get('/pedidos', (req, res)=> { // PAGINA DE PEDIDOS
-    res.json(pedidos);  
-});
+app.use('/pedidos', routePedidos);   /// TODAS LOS PEDIDOS ///
+
 
