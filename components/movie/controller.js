@@ -9,7 +9,7 @@ module.exports.getMovies = async (req, res) => {
 
 module.exports.findMovies = async (req, res) => {
 
-    const tituloPelicula = await Movie.findOne({field1: req.params.title});
+    const tituloPelicula = await Movie.findOne({title: req.params.title});
     res.json(`${tituloPelicula} Ha sido ENCONTRADA con exito`);
     
 };
