@@ -13,10 +13,10 @@ const routeMovies = require('./components/movie/router.js');
 // const Movie = require('./components/movie/model.js');
 
 const routeUsers = require('./components/users/router.js');
-const User = require('./components/users/model.js');
+// const User = require('./components/users/model.js');
 
 const routePedidos = require('./components/pedidos/router.js');
-const Pedido = require('./components/pedidos/model.js');
+// const Pedido = require('./components/pedidos/model.js');
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////// IMPORTA MONGOOSE DB Y CREA LA CADENA DE CONEXION CON LA BBDD ////////////////////////////////
