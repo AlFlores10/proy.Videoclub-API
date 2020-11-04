@@ -89,5 +89,6 @@ app.delete  ('/films', routeMovies);    /// ELIMINAR PELICULA   ///
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 app.use('/pedidos', routePedidos);   /// TODOS LOS PEDIDOS ///
+app.post('/pedidos' routePedidos);   /// CREAR PEDIDOS ///
 
 
