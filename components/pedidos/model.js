@@ -3,10 +3,10 @@ const mongoose = require('mongoose');
 const PedidosSchema = new mongoose.Schema({
 
     userId: { 
-        type: ObjectId, ref: 'User'
+        type: mongoose.ObjectId, ref: 'User'
     },
     movieId: { 
-        type: ObjectId, ref: 'Movie' 
+        type: mongoose.ObjectId, ref: 'Movie' 
     },
     creacion: { 
         type: Date, default: Date 
@@ -16,4 +16,5 @@ const PedidosSchema = new mongoose.Schema({
     }
 
 });
+
 module.exports = mongoose.model('Pedido', PedidosSchema);

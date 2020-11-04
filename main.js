@@ -10,7 +10,7 @@ app.use(cors()); // INSTANCIA CORS
 app.use(express.json()); // INSTANCIA BODYPARSER
 
 const routeMovies = require('./components/movie/router.js');
-const Movie = require('./components/movie/model.js');
+// const Movie = require('./components/movie/model.js');
 
 const routeUsers = require('./components/users/router.js');
 const User = require('./components/users/model.js');
@@ -83,9 +83,9 @@ app.delete('/users', routeUsers); /// ELIMINAR USUARIO ///
 
 app.use('/films', routeMovies);   /// TODAS LAS PELICULAS ///
 
-app.get('/films/:title', routeMovies); //// BUSQUEDA POR TITULO ////
+app.get('/films', routeMovies); //// BUSQUEDA POR TITULO ////
 
-app.patch('/films/:title', routeMovies); //// MODIFICA POR TITULO ////
+app.patch('/films', routeMovies); //// MODIFICA POR TITULO ////
 
 app.post('/films', routeMovies); /// NUEVA PELICULA ///
 
