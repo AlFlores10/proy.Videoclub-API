@@ -9,8 +9,8 @@ module.exports.getUsers = async (req, res) => {
 
 module.exports.findUser = async (req, res) => { // BUSCAR USUARIO
 
-    const tituloUsuario = await User.findOne({name: req.params.name});
-    res.json(`${tituloUsuario} Ha sido ENCONTRADO con exito`);
+    const nombreUsuario = await User.findOne({name: req.params.name});
+    res.json(`${nombreUsuario.name} Ha sido ENCONTRADO con exito`);
     
 };
 
@@ -21,7 +21,10 @@ module.exports.modifyUser = async (req, res) => {  // MODIFICAR USUARIO
     // const pelicula = await Movie.findById(req.body._id);
     // if(!movie) return res.json({error: elemento no encontrado});
 
-    usuarioModificado = req.body;
+    usuarioModificado.name = req.body.name;
+    usuarioModificado.password = req.body.password;
+    usuarioModificado.role = req.body.role;
+
     await usuarioModificado.save();
     res.json(`${usuarioModificado} Ha sido MODIFICADO con exito`);
 };
@@ -37,7 +40,6 @@ module.exports.insertUser = async (req, res) => {  // NUEVO USUARIO
 
 
 module.exports.borraUser = async (req, res) => { // BORRAR USUARIO
-    const borraUsuario = await User.findOne({name: req.body.name});
-    await borraUsuario.remove();
+    const borraUsuario = await User.deleteOne(req.query.id);
     res.json(`${borraUsuario} Ha sido borrado con exito`);
 };

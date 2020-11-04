@@ -6,7 +6,7 @@ const MovieSchema = new mongoose.Schema({
         type: String 
     },
     duration: { 
-        type: String 
+        type: Number 
     },
     category: { 
         type: String, enum: ['TP', '+18'] 

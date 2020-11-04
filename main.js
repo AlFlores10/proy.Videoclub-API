@@ -31,8 +31,8 @@ useCreateIndex: true,
 useFindAndModify: false
 })
 
-.then(() => console.log('Mongoose funcionando'))  // SE EJECUTA SI LA PROMESA DEL METODO CONNECT SE RESUELVE BIEN
-.catch(() => console.log('Mongoose NO funcionando')); // SE EJECUTA SI LA PROMESA DEL METODO CONNECT SE RESUELVE MAL
+.then(() => console.log('Mongoose OK'))       // SE EJECUTA SI LA PROMESA DEL METODO CONNECT SE RESUELVE BIEN
+.catch(() => console.log('Mongoose OFF'));    // SE EJECUTA SI LA PROMESA DEL METODO CONNECT SE RESUELVE MAL
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -40,7 +40,7 @@ useFindAndModify: false
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 app.use((req, res, next) => { // MIDDLEWARE VALIDACION
-    console.log('Ejecutando middleware');
+    console.log('HA PASADO POR AQUI 1');
     next();
 });
 
@@ -64,37 +64,29 @@ app.listen(3000, ()=> { // INICIANDO SERVIDOR NODE
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////// PETICIONES PAGINA DE USUARIO ///////////////////////////////////////////////// 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.use('/users', routeUsers);   /// TODOS LOS USUARIOS ///
-
-app.get('/users/:name', routeUsers); //// BUSQUEDA USUARIO POR NAME ////
-
-app.patch('/users/:name', routeUsers); //// MODIFICA USUARIO POR NAME ////
-
-app.post('/users', routeUsers); /// NUEVO USUARIO ///
-
-app.delete('/users', routeUsers); /// ELIMINAR USUARIO ///
+app.use     ('/users', routeUsers);     /// TODOS LOS USUARIOS ///
+app.get     ('/users', routeUsers);     //// BUSQUEDA USUARIO POR NAME ////
+app.patch   ('/users', routeUsers);     //// MODIFICA USUARIO POR NAME ////
+app.post    ('/users', routeUsers);     /// NUEVO USUARIO ///
+app.delete  ('/users', routeUsers);     /// ELIMINAR USUARIO ///
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////// PETICIONES PAGINA DE PELICULAS //////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.use('/films', routeMovies);   /// TODAS LAS PELICULAS ///
-
-app.get('/films', routeMovies); //// BUSQUEDA POR TITULO ////
-
-app.patch('/films', routeMovies); //// MODIFICA POR TITULO ////
-
-app.post('/films', routeMovies); /// NUEVA PELICULA ///
-
-app.delete('/films', routeMovies); /// ELIMINAR PELICULA ///
+app.use     ('/films', routeMovies);    /// TODAS LAS PELICULAS ///
+app.get     ('/films', routeMovies);    /// BUSQUEDA POR TITULO ///
+app.patch   ('/films', routeMovies);    /// MODIFICA POR TITULO ///
+app.post    ('/films', routeMovies);    /// NUEVA PELICULA      ///
+app.delete  ('/films', routeMovies);    /// ELIMINAR PELICULA   ///
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////// PETICIONES PAGINA DE PEDIDOS //////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.use('/pedidos', routePedidos);   /// TODAS LOS PEDIDOS ///
+app.use('/pedidos', routePedidos);   /// TODOS LOS PEDIDOS ///
 
 
