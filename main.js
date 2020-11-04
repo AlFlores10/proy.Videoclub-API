@@ -71,6 +71,7 @@ app.get     ('/users', routeUsers);     /// BUSQUEDA USUARIO POR NAME ///
 app.patch   ('/users', routeUsers);     /// MODIFICA USUARIO POR NAME ///
 app.post    ('/users', routeUsers);     /// NUEVO USUARIO ///
 app.delete  ('/users', routeUsers);     /// ELIMINAR USUARIO ///
+app.get     ('/users', routeUsers);     /// LOGIN Y JWT ///
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
