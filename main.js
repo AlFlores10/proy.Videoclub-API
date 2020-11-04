@@ -67,8 +67,8 @@ app.listen(3000, ()=> { // INICIANDO SERVIDOR NODE
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 app.use     ('/users', routeUsers);     /// TODOS LOS USUARIOS ///
-app.get     ('/users', routeUsers);     //// BUSQUEDA USUARIO POR NAME ////
-app.patch   ('/users', routeUsers);     //// MODIFICA USUARIO POR NAME ////
+app.get     ('/users', routeUsers);     /// BUSQUEDA USUARIO POR NAME ///
+app.patch   ('/users', routeUsers);     /// MODIFICA USUARIO POR NAME ///
 app.post    ('/users', routeUsers);     /// NUEVO USUARIO ///
 app.delete  ('/users', routeUsers);     /// ELIMINAR USUARIO ///
 
