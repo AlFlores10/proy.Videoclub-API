@@ -4,10 +4,11 @@
 
 const express = require('express'); // IMPORTA EXPRESS
 const cors = require('cors'); // IMPORTA CORS
-
 const app = express(); // USA EXPRESS
 app.use(cors()); // INSTANCIA CORS
 app.use(express.json()); // INSTANCIA BODYPARSER
+const PORT = process.env.PORT || 3000; // SETEA PUERTO
+
 
 const routeMovies = require('./components/movie/router.js');
 // const Movie = require('./components/movie/model.js');
@@ -57,8 +58,8 @@ app.get('/', middleware2, (req, res)=> { // PAGINA DE INICIO
 ////////////////////////////////////////////// INICIANDO SERVIDOR NODE //////////////////////////////////////////////////// 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.listen(3000, ()=> { // INICIANDO SERVIDOR NODE
-    console.log('Servidor levantado en puerto 3000 ');
+app.listen(PORT, ()=> { // INICIANDO SERVIDOR NODE
+    console.log('Servidor levantado en puerto '+ PORT);
 });
 
 
@@ -88,7 +89,7 @@ app.delete  ('/films', routeMovies);    /// ELIMINAR PELICULA   ///
 ////////////////////////////////////////////// PETICIONES PAGINA DE PEDIDOS //////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.use('/pedidos', routePedidos);   /// TODOS LOS PEDIDOS ///
-app.post('/pedidos', routePedidos);   /// CREAR PEDIDOS ///
+app.use     ('/pedidos', routePedidos);   /// TODOS LOS PEDIDOS ///
+app.post    ('/pedidos', routePedidos);   /// CREAR PEDIDOS ///
 
 
