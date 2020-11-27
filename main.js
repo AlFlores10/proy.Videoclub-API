@@ -8,7 +8,8 @@ const app = express(); // USA EXPRESS
 app.use(cors()); // INSTANCIA CORS
 app.use(express.json()); // INSTANCIA BODYPARSER
 const PORT = process.env.PORT || 3000; // SETEA PUERTO
-
+const auth = require ('./components/config/auth');
+const login = require ('./components/config/config');
 
 const routeMovies = require('./components/movie/router.js');
 // const Movie = require('./components/movie/model.js');
@@ -40,19 +41,12 @@ useFindAndModify: false
 ///////////////////////////////////////////////////// MIDDLEWARES ///////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.use((req, res, next) => { // MIDDLEWARE VALIDACION
-    console.log('HA PASADO POR AQUI 1');
-    next();
-});
-
 const middleware2 = (req, res, next)=> {  // CREA UN MIDDLEWARE COMO FUNCION PARA PODER REUTILIZARLA
-    console.log('Ha pasado por aqui 2');
+    res.json('proy.Videoclub-API Version 1.0.0')
+    console.log('proy.Videoclub-API Version 1.0.0');
     next();
 };
 
-app.get('/', middleware2, (req, res)=> { // PAGINA DE INICIO
-    res.json('proy.Videoclub-API Version 1.0.0')
-});
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////// INICIANDO SERVIDOR NODE //////////////////////////////////////////////////// 
@@ -67,19 +61,19 @@ app.listen(PORT, ()=> { // INICIANDO SERVIDOR NODE
 /////////////////////////////////////////// PETICIONES PAGINA DE USUARIO ///////////////////////////////////////////////// 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.use     ('/users', routeUsers);     /// TODOS LOS USUARIOS ///
-app.get     ('/users', routeUsers);     /// BUSQUEDA USUARIO POR NAME ///
-app.patch   ('/users', routeUsers);     /// MODIFICA USUARIO POR NAME ///
-app.post    ('/users', routeUsers);     /// NUEVO USUARIO ///
-app.delete  ('/users', routeUsers);     /// ELIMINAR USUARIO ///
-app.get     ('/users', routeUsers);     /// LOGIN Y JWT ///
-
+app.get     ('/', middleware2, routeUsers);                 /// BUSQUEDA USUARIO POR NAME ///
+app.post    ('/', routeUsers);                     /// NUEVO USUARIO ///
+app.use     ('/login', login.loginUsers, routeUsers);       /// LOGIN USUARIO ///
+app.use     ('/users', auth.checkToken, routeUsers);        /// VERIFICA TOKEN USUARIO ///
+app.get     ('/users', routeUsers);                         /// TODOS LOS USUARIOS ///
+app.patch   ('/users', routeUsers);                         /// MODIFICA USUARIO POR NAME ///
+app.delete  ('/users', routeUsers);                         /// ELIMINAR USUARIO ///
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////// PETICIONES PAGINA DE PELICULAS //////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.use     ('/films', routeMovies);    /// TODAS LAS PELICULAS ///
+app.use     ('/films', auth.checkToken, routeMovies);    /// TODAS LAS PELICULAS ///
 app.get     ('/films', routeMovies);    /// BUSQUEDA POR TITULO ///
 app.patch   ('/films', routeMovies);    /// MODIFICA POR TITULO ///
 app.post    ('/films', routeMovies);    /// NUEVA PELICULA      ///
@@ -89,7 +83,7 @@ app.delete  ('/films', routeMovies);    /// ELIMINAR PELICULA   ///
 ////////////////////////////////////////////// PETICIONES PAGINA DE PEDIDOS //////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.use     ('/pedidos', routePedidos);   /// TODOS LOS PEDIDOS ///
+app.use     ('/pedidos', auth.checkToken, routePedidos);   /// TODOS LOS PEDIDOS ///
 app.post    ('/pedidos', routePedidos);   /// CREAR PEDIDOS ///
 
 

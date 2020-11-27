@@ -20,13 +20,16 @@ Lista de tecnologías utilizadas en el proyecto:
 * [Mongoose](https://html.spec.whatwg.org/multipage/): Version 5.10 
 ## Installation
 ***
-1. npm run start (Para iniciar el servidor)
-2. localhost:3000 (Para acceder al servidor)
-3. localhost:3000/films (Acceder a todas las peliculas)
-4. localhost:3000/films/:title (Busca una pelicula existente por titulo)
-5. localhost:3000/users (Busca usuarios)
-6. localhost:3000/pedidos (Busca pedidos y los crea)
-```
+``` 
+1. npm run start (Iniciar el servidor)
+2. GET --> localhost:3000 (Acceder al servidor)
+3. POST --> localhost:3000 (Crea usuario. (TEST -> {"name": "prueba", "password": "1234"}))
+4. POST --> localhost:3000/login (Permite login y recibe token. (TEST -> {"name: "prueba", "password: "1234"}))
+5. GET --> localhost:3000/films (Acceder a todas las peliculas)
+6. GET --> localhost:3000/films/:title (Busca una pelicula existente por titulo)
+7. GET / PATCH / DELETE --> localhost:3000/users (Busca, modifica y borra usuarios)
+8. GET / POST --> localhost:3000/pedidos (Busca pedidos y los crea)
+
 ```
 ## Repositories
 ***
