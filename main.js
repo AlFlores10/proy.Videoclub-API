@@ -26,7 +26,7 @@ const routePedidos = require('./components/pedidos/router.js');
 
 const mongoose = require('mongoose'); // IMPORTA MONGOOSE
 
-mongoose.connect('mongodb://localhost:27017/db-ejemplo', { // CREA CONEXION Y BASE DE DATOS CON MONGODB
+mongoose.connect('mongodb+srv://admin:123alum789@cluster0.poqu0.mongodb.net/videoclubapi?retryWrites=true&w=majority', { // CREA CONEXION Y BASE DE DATOS CON MONGODB
 useNewUrlParser: true,
 useUnifiedTopology: true,
 useCreateIndex: true,
