@@ -2,12 +2,12 @@
 ///////////////////////////////////////// IMPORTA EXPRESS Y CORS /////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const express = require('express'); // IMPORTA EXPRESS
-const cors = require('cors'); // IMPORTA CORS
-const app = express(); // USA EXPRESS
-app.use(cors()); // INSTANCIA CORS
-app.use(express.json()); // INSTANCIA BODYPARSER
-const PORT = process.env.PORT || 3000; // SETEA PUERTO
+const express = require('express');                                             // IMPORTA EXPRESS
+const cors = require('cors');                                                   // IMPORTA CORS
+const app = express();                                                          // USA EXPRESS
+app.use(cors());                                                                // INSTANCIA CORS
+app.use(express.json());                                                        // INSTANCIA BODYPARSER
+const PORT = process.env.PORT || 3000;                                          // SETEA PUERTO
 const auth = require ('./components/config/auth');
 const login = require ('./components/config/config');
 
@@ -33,15 +33,15 @@ useCreateIndex: true,
 useFindAndModify: false
 })
 
-.then(() => console.log('Mongoose OK'))       // SE EJECUTA SI LA PROMESA DEL METODO CONNECT SE RESUELVE BIEN
-.catch(() => console.log('Mongoose OFF'));    // SE EJECUTA SI LA PROMESA DEL METODO CONNECT SE RESUELVE MAL
+.then(() => console.log('Mongoose OK'))                 // SE EJECUTA SI LA PROMESA DEL METODO CONNECT SE RESUELVE BIEN
+.catch(() => console.log('Mongoose OFF'));              // SE EJECUTA SI LA PROMESA DEL METODO CONNECT SE RESUELVE MAL
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////// MIDDLEWARES ///////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const middleware2 = (req, res, next)=> {  // CREA UN MIDDLEWARE COMO FUNCION PARA PODER REUTILIZARLA
+const middleware2 = (req, res, next)=> {                // CREA UN MIDDLEWARE COMO FUNCION PARA PODER REUTILIZARLA
     res.json('proy.Videoclub-API Version 1.0.0')
     console.log('proy.Videoclub-API Version 1.0.0');
     next();
@@ -62,7 +62,7 @@ app.listen(PORT, ()=> { // INICIANDO SERVIDOR NODE
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 app.get     ('/', middleware2, routeUsers);                 /// BUSQUEDA USUARIO POR NAME ///
-app.post    ('/', routeUsers);                     /// NUEVO USUARIO ///
+app.post    ('/', routeUsers);                              /// NUEVO USUARIO ///
 app.use     ('/login', login.loginUsers, routeUsers);       /// LOGIN USUARIO ///
 app.use     ('/users', auth.checkToken, routeUsers);        /// VERIFICA TOKEN USUARIO ///
 app.get     ('/users', routeUsers);                         /// TODOS LOS USUARIOS ///
@@ -73,17 +73,17 @@ app.delete  ('/users', routeUsers);                         /// ELIMINAR USUARIO
 /////////////////////////////////////////// PETICIONES PAGINA DE PELICULAS //////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.use     ('/films', auth.checkToken, routeMovies);    /// TODAS LAS PELICULAS ///
-app.get     ('/films', routeMovies);    /// BUSQUEDA POR TITULO ///
-app.patch   ('/films', routeMovies);    /// MODIFICA POR TITULO ///
-app.post    ('/films', routeMovies);    /// NUEVA PELICULA      ///
-app.delete  ('/films', routeMovies);    /// ELIMINAR PELICULA   ///
+app.use     ('/films', auth.checkToken, routeMovies);       /// TODAS LAS PELICULAS ///
+app.get     ('/films', routeMovies);                        /// BUSQUEDA POR TITULO ///
+app.patch   ('/films', routeMovies);                        /// MODIFICA POR TITULO ///
+app.post    ('/films', routeMovies);                        /// NUEVA PELICULA      ///
+app.delete  ('/films', routeMovies);                        /// ELIMINAR PELICULA   ///
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////// PETICIONES PAGINA DE PEDIDOS //////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.use     ('/pedidos', auth.checkToken, routePedidos);   /// TODOS LOS PEDIDOS ///
-app.post    ('/pedidos', routePedidos);   /// CREAR PEDIDOS ///
+app.use     ('/pedidos', auth.checkToken, routePedidos);    /// TODOS LOS PEDIDOS ///
+app.post    ('/pedidos', routePedidos);                     /// CREAR PEDIDOS ///
 
 
