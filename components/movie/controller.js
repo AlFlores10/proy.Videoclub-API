@@ -1,44 +1,83 @@
 const Movie = require ('./model.js');
 
-module.exports.getMovies = async (req, res) => { // BUSQUEDA TODAS LAS PELICULAS //
-
-    const data = await Movie.find({});
-    res.json(data);
+module.exports.getMovies = async (req, res) => {
+    try {
+        const dataFilms = await Movie.find();
+        res.json(dataFilms);
+    }
+    catch (error) {
+        res.status(500).send({
+            message: 'La película no ha sido encontrada'
+        });
+    }
 };
 
 
-module.exports.findMovies = async (req, res) => { // BUSCAR PELICULA //
-
-    const tituloPelicula = await Movie.findOne({title: req.params.title});
-    res.json(`${tituloPelicula.title} Ha sido ENCONTRADA con exito`);
+module.exports.findMovies = async (req, res) => { 
+    try {
+        const titleFilm = await Movie.find({ title: req.params.title });
+        res.json({
+            message: titleFilm
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            message: 'La pelicula no ha sido encontrada'
+        });
+    }
 };
 
 
 module.exports.modifyMovies = async (req, res) => {  // MODIFICAR PELICULA //
+    try {
+        // const usuarioModificado = await User.findById(req.body._id);
+        const filmModificado = await Movie.findOne({ _id: req.body._id });
+        filmModificado.description = req.body.description;
+        await filmModificado.save();
+        res.json({
+            message: filmModificado
+        });
 
-    const peliculaModificada = await Movie.findOne({_id: req.body._id});
-    // const pelicula = await Movie.findById(req.body._id);
-    // if(!movie) return res.json({error: elemento no encontrado});
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            message: 'La pelicula no ha podido modificarse correctamente'
+        });
+    }
 
-    peliculaModificada.title = req.body.title;
-    peliculaModificada.duration = req.body.duration;
-    peliculaModificada.category = req.body.category;
-
-    await peliculaModificada.save();
-    res.json(`${peliculaModificada} Ha sido MODIFICADA con exito`);
 };
 
 
 module.exports.insertMovies = async (req, res) => {  // INSERTAR PELICULA //
-    const nuevaPelicula = req.body;
+    const { title, duration, category, description} = req.body;
+    try {
+        const newFilm = new Movie({ title, duration, category, description });
+        await newFilm.save();
+        res.json({
+            message: newFilm
+        });
 
-    const movie = new Movie(nuevaPelicula);
-    await movie.save();
-    res.json(`${movie} Ha sido INTRODUCIDA con exito`);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            message: 'La pelicula no ha podido crearse correctamente'
+        });
+    }
 };
 
 
 module.exports.borraMovies = async (req, res) => { // BORRAR PELICULA //
-    const borraPelicula = await Movie.deleteOne(req.query.id);
-    res.json(`${borraPelicula} Ha sido borrada con exito`);
+    try {
+        // const borraUsuario = await User.deleteOne(req.query.id);
+        const borraFilm = await Movie.findByIdAndRemove(req.query._id);
+        res.json({
+            message: borraFilm
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            message: 'La pelicula no ha podido borrarse correctamente'
+        });
+    }
 };
+

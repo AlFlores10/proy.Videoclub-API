@@ -16,12 +16,12 @@ API Rest Express - Mongoose (JavaScript).
 ## Technologies
 ***
 Lista de tecnologías utilizadas en el proyecto:
-* [JavaScript](https://html.spec.whatwg.org/multipage/): Version 6 
+* [JavaScript](https://html.spec.whatwg.org/multipage/): ES6 
 * [Node](https://html.spec.whatwg.org/multipage/): Version 12.19 
 * [Express](https://html.spec.whatwg.org/multipage/): Version 4.17
 * [Mongoose](https://html.spec.whatwg.org/multipage/): Version 5.10 
-* [Heroku](https://id.heroku.com/login): Version Web
-* [MongoDB Atlas](https://www.mongodb.com/cloud/atlas): Version 5.10 
+* [Heroku](https://id.heroku.com/login)
+* [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
 
 ## Installation
 ***

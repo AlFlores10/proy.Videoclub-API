@@ -6,10 +6,10 @@ module.exports.getPedidos = async (req, res) => {
     res.json(data);
 };
 
-module.exports.insertPedido = async (req, res) => {  // NUEVO USUARIO
+module.exports.insertPedido = async (req, res) => {  // NUEVO PEDIDO
     const nuevoPedido = req.body;
 
     const newPedido = new Pedido(nuevoPedido);
     await newPedido.save();
-    res.json(`${newPedido} Ha sido INTRODUCIDO con exito`);
+    res.json(newPedido);
 };

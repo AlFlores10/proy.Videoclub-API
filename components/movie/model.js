@@ -3,14 +3,23 @@ const mongoose = require('mongoose');
 const MovieSchema = new mongoose.Schema({
 
     title: { 
-        type: String 
+        type: String,
+        required: true 
     },
     duration: { 
-        type: Number 
+        type: Number,
+        required: true 
     },
     category: { 
-        type: String, enum: ['TP', '+18'] 
+        type: String,
+        required: true,
+        enum: ['TP', '+18'] 
+    },
+    description: {
+        type: String,
+        required: false
     }
 
 });
+
 module.exports = mongoose.model('Movie', MovieSchema);

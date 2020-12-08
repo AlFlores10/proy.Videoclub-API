@@ -2,31 +2,28 @@
 ///////////////////////////////////////// IMPORTA EXPRESS Y CORS /////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const express = require('express');                                             // IMPORTA EXPRESS
-const cors = require('cors');                                                   // IMPORTA CORS
-const app = express();                                                          // USA EXPRESS
-app.use(cors());                                                                // INSTANCIA CORS
-app.use(express.json());                                                        // INSTANCIA BODYPARSER
-const PORT = process.env.PORT || 3000;                                          // SETEA PUERTO
+const express = require('express');                                // IMPORTA EXPRESS
+const cors = require('cors');                                      // IMPORTA CORS
+const app = express();                                             // USA EXPRESS
+const PORT = process.env.PORT || 3000; 
+
+// Importaciones
 const auth = require ('./components/config/auth');
 const login = require ('./components/config/config');
 
+// Routes
 const routeMovies = require('./components/movie/router.js');
-// const Movie = require('./components/movie/model.js');
-
 const routeUsers = require('./components/users/router.js');
-// const User = require('./components/users/model.js');
-
 const routePedidos = require('./components/pedidos/router.js');
-// const Pedido = require('./components/pedidos/model.js');
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////// IMPORTA MONGOOSE DB Y CREA LA CADENA DE CONEXION CON LA BBDD ////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const mongoose = require('mongoose'); // IMPORTA MONGOOSE
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost/db-ejemplo';
 
-mongoose.connect('mongodb+srv://admin:123alum789@cluster0.poqu0.mongodb.net/videoclubapi?retryWrites=true&w=majority', { // CREA CONEXION Y BASE DE DATOS CON MONGODB
+mongoose.connect( MONGO_URI, { // CREA CONEXION Y BASE DE DATOS CON MONGODB
 useNewUrlParser: true,
 useUnifiedTopology: true,
 useCreateIndex: true,
@@ -40,9 +37,13 @@ useFindAndModify: false
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////// MIDDLEWARES ///////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+app.use(cors());                                                                // INSTANCIA CORS
+app.use(express.json());                                                        // INSTANCIA BODYPARSER
 
 const middleware2 = (req, res, next)=> {                // CREA UN MIDDLEWARE COMO FUNCION PARA PODER REUTILIZARLA
-    res.json('proy.Videoclub-API Version 1.0.0')
+    res.json({
+        message: "proy.Videoclub-API Version 1.0.0"
+    });
     console.log('proy.Videoclub-API Version 1.0.0');
     next();
 };
@@ -61,23 +62,16 @@ app.listen(PORT, ()=> { // INICIANDO SERVIDOR NODE
 /////////////////////////////////////////// PETICIONES PAGINA DE USUARIO ///////////////////////////////////////////////// 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.get     ('/', middleware2, routeUsers);                 /// BUSQUEDA USUARIO POR NAME ///
+app.get     ('/', middleware2);                             /// PETICION PAGINA PRINCIPAL ///
 app.post    ('/', routeUsers);                              /// NUEVO USUARIO ///
-app.use     ('/login', login.loginUsers, routeUsers);       /// LOGIN USUARIO ///
+app.post    ('/login', login.loginUsers);                   /// LOGIN USUARIO ///
 app.use     ('/users', auth.checkToken, routeUsers);        /// VERIFICA TOKEN USUARIO ///
-app.get     ('/users', routeUsers);                         /// TODOS LOS USUARIOS ///
-app.patch   ('/users', routeUsers);                         /// MODIFICA USUARIO POR NAME ///
-app.delete  ('/users', routeUsers);                         /// ELIMINAR USUARIO ///
-
+                   
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////// PETICIONES PAGINA DE PELICULAS //////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 app.use     ('/films', auth.checkToken, routeMovies);       /// TODAS LAS PELICULAS ///
-app.get     ('/films', routeMovies);                        /// BUSQUEDA POR TITULO ///
-app.patch   ('/films', routeMovies);                        /// MODIFICA POR TITULO ///
-app.post    ('/films', routeMovies);                        /// NUEVA PELICULA      ///
-app.delete  ('/films', routeMovies);                        /// ELIMINAR PELICULA   ///
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////// PETICIONES PAGINA DE PEDIDOS //////////////////////////////////////////////

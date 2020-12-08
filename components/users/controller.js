@@ -1,29 +1,26 @@
 const User = require('./model.js');
 const bcrypt = require('bcryptjs');
-const moment = require('moment');
-const jwt = require('jwt-simple');
+
 
 module.exports.getUsers = async (req, res) => {
     try {
-        const data = await User.find({});
-        res.json(data);
-
-    } catch (error) {
-
-        console.log(error);
+        const dataUsers = await User.find();
+        res.json(dataUsers);
+    }
+    catch (error) {
         res.status(500).send({
             message: 'El usuario no ha sido encontrado'
         });
     }
-
 };
 
 
-module.exports.findUser = async (req, res) => { // BUSCAR USUARIO
+module.exports.findUser = async (req, res) => { // BUSCAR USUARIO POR NAME
     try {
-        const nombreUsuario = await User.findOne({ name: req.params.name });
-        res.json(`${nombreUsuario.name} Ha sido ENCONTRADO con exito`);
-
+        const nombreUsuario = await User.find({ name: req.params.name});
+            res.json({
+                message: nombreUsuario
+            });
     } catch (error) {
         console.log(error);
         res.status(500).send({
@@ -33,18 +30,17 @@ module.exports.findUser = async (req, res) => { // BUSCAR USUARIO
 };
 
 
-module.exports.modifyUser = async (req, res) => {  // MODIFICAR USUARIO
+module.exports.modifyUser = async (req, res) => {  // MODIFICAR PASSWORD USUARIO POR _ID
     try {
+        // const usuarioModificado = await User.findById(req.body._id);
         const usuarioModificado = await User.findOne({ _id: req.body._id });
-        // const pelicula = await Movie.findById(req.body._id);
-        // if(!movie) return res.json({error: elemento no encontrado});
+        req.body.password = bcrypt.hashSync(req.body.password, 10);
 
-        usuarioModificado.name = req.body.name;
         usuarioModificado.password = req.body.password;
-        usuarioModificado.role = req.body.role;
-
         await usuarioModificado.save();
-        res.json(`${usuarioModificado} Ha sido MODIFICADO con exito`);
+        res.json({
+            message: usuarioModificado
+        });
 
     } catch (error) {
         console.log(error);
@@ -58,11 +54,13 @@ module.exports.modifyUser = async (req, res) => {  // MODIFICAR USUARIO
 
 module.exports.insertUser = async (req, res) => {  // NUEVO USUARIO
     req.body.password = bcrypt.hashSync(req.body.password, 10);
-    const nuevoUsuario = req.body;
+    const { name, password } = req.body;
     try {
-        const newUser = new User(nuevoUsuario);
+        const newUser = new User({ name, password });
         await newUser.save();
-        res.json(`${newUser} Ha sido INTRODUCIDO con exito`);
+        res.json({
+            message: newUser
+        });
 
     } catch (error) {
         console.log(error);
@@ -73,10 +71,13 @@ module.exports.insertUser = async (req, res) => {  // NUEVO USUARIO
 };
 
 
-module.exports.borraUser = async (req, res) => { // BORRAR USUARIO
+module.exports.borraUser = async (req, res) => { // BORRAR USUARIO POR _ID
     try {
-        const borraUsuario = await User.deleteOne(req.query.id);
-        res.json(`${borraUsuario} Ha sido borrado con exito`);
+        // const borraUsuario = await User.deleteOne(req.query.id);
+        const borraUsuario = await User.findByIdAndRemove(req.query._id);
+        res.json({
+            message: borraUsuario
+        });
     } catch (error) {
         console.log(error);
         res.status(500).send({
